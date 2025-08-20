@@ -20,14 +20,16 @@ COPY src ./src
 # Compilar aplicación
 RUN mvn clean package -DskipTests -B
 
-# Debug: listar archivos generados
-RUN ls -la /app/target/
+# Debug: verificar archivos generados
+RUN echo "=== ARCHIVOS GENERADOS ===" && \
+    ls -la target/ && \
+    echo "=========================="
 
 # Etapa 2: Runtime
 FROM eclipse-temurin:17-jre-alpine
 
 # Instalar dependencias necesarias
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata curl
 
 # Crear directorio de trabajo
 WORKDIR /app
@@ -36,8 +38,12 @@ WORKDIR /app
 RUN addgroup -g 1001 -S spring && \
     adduser -S spring -u 1001
 
-# Copiar JAR desde la etapa de build usando comodín
+# Copiar JAR desde la etapa de build 
 COPY --from=builder /app/target/*.jar app.jar
+
+# Verificar que el JAR se copió correctamente
+RUN ls -la app.jar && \
+    echo "JAR copiado exitosamente"
 
 # Cambiar propietario del archivo
 RUN chown spring:spring app.jar
@@ -45,17 +51,16 @@ RUN chown spring:spring app.jar
 # Cambiar a usuario no privilegiado
 USER spring:spring
 
-# Exponer puerto dinámico de Railway
-EXPOSE $PORT
+# Exponer puerto
+EXPOSE 8080
 
-# Variables de entorno por defecto
+# Variables de entorno
 ENV SPRING_PROFILES_ACTIVE=prod
-ENV JAVA_OPTS="-Xms256m -Xmx512m"
+ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseContainerSupport"
 
-# Comando para ejecutar la aplicación con optimizaciones
-CMD ["sh", "-c", "java $JAVA_OPTS -Dserver.port=$PORT -jar app.jar"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:${PORT:-8080}/actuator/health || exit 1
 
-# Metadatos
-LABEL maintainer="ForoHub Team"
-LABEL description="ForoHub API REST - Forum Management System"
-LABEL version="1.0.0"
+# Comando para ejecutar la aplicación
+CMD ["sh", "-c", "echo 'Iniciando ForoHub...' && java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"]
