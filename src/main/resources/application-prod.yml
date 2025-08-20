@@ -1,0 +1,46 @@
+# Configuración para producción en Railway
+spring:
+  profiles:
+    active: prod
+  
+  # Base de datos (Railway MySQL)
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  # JPA/Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  
+  # Flyway
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
+# Configuración del servidor
+server:
+  port: ${PORT:8081}
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# JWT
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET}
+
+# Logging para producción
+logging:
+  level:
+    com.forohub: INFO
+    org.springframework.security: WARN
+    org.flywaydb: INFO
