@@ -1,8 +1,8 @@
--- Insertar usuarios de prueba
+-- Insertar usuarios de prueba (contraseña: password para todos)
 INSERT INTO usuarios (nombre, email, contraseña, rol) VALUES
-('Administrador', 'admin@forohub.com', '$2a$10$Y50UaMFOxteibQEYLrwuAuoC..8QQTXGmfXEZWnPL2MpxpzQUTEKq', 'ADMIN'),
-('Juan Pérez', 'juan@email.com', '$2a$10$Y50UaMFOxteibQEYLrwuAuoC..8QQTXGmfXEZWnPL2MpxpzQUTEKq', 'USER'),
-('María García', 'maria@email.com', '$2a$10$Y50UaMFOxteibQEYLrwuAuoC..8QQTXGmfXEZWnPL2MpxpzQUTEKq', 'USER');
+('Administrador', 'admin@forohub.com', '$2a$10$qo86s/bjtX/eRIhH3GOxV.Vg87jwUleyeODyYxF8ctN9LgnJboeM.', 'ADMIN'),
+('Juan Pérez', 'juan.perez@email.com', '$2a$10$qo86s/bjtX/eRIhH3GOxV.Vg87jwUleyeODyYxF8ctN9LgnJboeM.', 'USER'),
+('María García', 'maria.garcia@email.com', '$2a$10$qo86s/bjtX/eRIhH3GOxV.Vg87jwUleyeODyYxF8ctN9LgnJboeM.', 'USER');
 
 -- Insertar tópicos de prueba
 INSERT INTO topicos (titulo, mensaje, fecha_creacion, estado, autor_id, curso) VALUES

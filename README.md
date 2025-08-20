@@ -1,197 +1,279 @@
-# ForoHub - API REST
+# 🗣️ ForoHub - API REST para Gestión de Foros
 
-## 📖 Descripción
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
+![JWT](https://img.shields.io/badge/JWT-Auth-red)
+![Maven](https://img.shields.io/badge/Maven-3.9-yellow)
 
-ForoHub es una API REST completa desarrollada con Spring Boot 3 y Java 17 para gestionar un foro de discusión. Permite a los usuarios registrarse, autenticarse, crear tópicos y responder a ellos con un sistema de seguridad robusto basado en JWT.
+## � Descripción
 
-## 🚀 Tecnologías Utilizadas
+ForoHub es una API REST completa desarrollada con Spring Boot que permite gestionar un foro de discusiones online. La aplicación implementa un sistema de autenticación JWT robusto y proporciona operaciones CRUD completas para usuarios, tópicos y respuestas.
 
-- **Java 17**
-- **Spring Boot 3.2.0**
-- **Spring Security** (con JWT)
-- **Spring Data JPA**
-- **MariaDB/MySQL**
-- **Flyway** (migraciones de base de datos)
-- **Swagger/OpenAPI** (documentación)
-- **Maven** (gestión de dependencias)
-- **JUnit & Mockito** (testing)
+## 🏗️ Arquitectura
 
-## 📋 Características
+El proyecto sigue los principios de **Clean Architecture** y está estructurado en las siguientes capas:
 
-### ✅ Autenticación y Seguridad
-- Registro de usuarios con validaciones
-- Login con JWT token
-- Autorización basada en roles (ADMIN, USER)
-- Encriptación de contraseñas con BCrypt
+```
+src/main/java/com/forohub/
+├── controller/          # Controladores REST
+├── domain/             # Entidades de dominio
+│   ├── usuario/        # Gestión de usuarios
+│   ├── topico/         # Gestión de tópicos
+│   └── respuesta/      # Gestión de respuestas
+├── infra/              # Infraestructura
+│   ├── security/       # Configuración de seguridad JWT
+│   └── springdoc/      # Configuración de documentación
+└── ForoHubApplication.java
+```
 
-### ✅ Gestión de Tópicos
-- Crear nuevos tópicos (requiere autenticación)
-- Listar todos los tópicos (público)
-- Ver detalles de un tópico específico (público)
-- Actualizar tópicos (solo autor o admin)
-- Eliminar tópicos (solo autor o admin)
+## 🚀 Características Principales
 
-### ✅ Gestión de Respuestas
-- Crear respuestas a tópicos (requiere autenticación)
-- Listar respuestas por tópico (público)
+### 🔐 Autenticación y Autorización
+- **JWT (JSON Web Tokens)** para autenticación stateless
+- **BCrypt** para hash seguro de contraseñas
+- **Spring Security** para control de acceso
+- Roles de usuario (ADMIN, USER)
 
-### ✅ Extras
-- Manejo centralizado de errores
-- Documentación interactiva con Swagger
-- Validaciones robustas
-- Datos de prueba incluidos
+### 📝 Gestión de Contenido
+- **Tópicos**: Crear, leer, actualizar y eliminar temas de discusión
+- **Respuestas**: Sistema completo de respuestas a tópicos
+- **Usuarios**: Registro y gestión de perfiles de usuario
+- **Paginación** en todas las consultas de listado
 
-## 🛠️ Configuración del Proyecto
+### 📊 Base de Datos
+- **Migraciones automáticas** con Flyway
+- **Modelo relacional** optimizado
+- **Datos de prueba** incluidos para testing
+
+### 📖 Documentación
+- **Swagger UI** integrado para testing interactivo
+- **OpenAPI 3.0** specification
+- **Colección de Postman** incluida
+
+## 🛠️ Tecnologías Utilizadas
+
+| Categoría | Tecnología | Versión |
+|-----------|------------|---------|
+| **Runtime** | Java | 17 |
+| **Framework** | Spring Boot | 3.2.0 |
+| **Seguridad** | Spring Security | 6.1.5 |
+| **Base de Datos** | MySQL/MariaDB | 10.4+ |
+| **ORM** | Spring Data JPA | 3.1.5 |
+| **Migraciones** | Flyway | 9.22.3 |
+| **Documentación** | SpringDoc OpenAPI | 2.2.0 |
+| **Build Tool** | Maven | 3.9+ |
+| **Autenticación** | JWT | - |
+
+## ⚡ Instalación y Configuración
 
 ### Prerrequisitos
-- Java 17 o superior
-- Maven 3.6+
-- MariaDB/MySQL 8.0+
 
-### Base de Datos
+- **Java 17** o superior
+- **Maven 3.9** o superior
+- **MySQL 8.0** o **MariaDB 10.4** o superior
 
-1. Crear la base de datos:
+### 1. Clonar el Repositorio
+
+```bash
+git clone https://github.com/tu-usuario/forohub.git
+cd forohub
+```
+
+### 2. Configurar Base de Datos
+
 ```sql
+-- Crear la base de datos
 CREATE DATABASE forohub;
-CREATE USER 'forohub_user'@'localhost' IDENTIFIED BY 'forohub_password';
+
+-- Crear usuario (opcional)
+CREATE USER 'forohub_user'@'localhost' IDENTIFIED BY 'tu_password';
 GRANT ALL PRIVILEGES ON forohub.* TO 'forohub_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-2. Configurar las credenciales en `application.yml`:
-```yaml
-spring:
-  datasource:
-    url: jdbc:mariadb://localhost:3306/forohub
-    username: forohub_user
-    password: forohub_password
+### 3. Configurar Variables de Entorno
+
+Crear archivo `.env` o configurar las siguientes variables:
+
+```properties
+# Base de datos
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=forohub
+DB_USERNAME=ortega
+DB_PASSWORD=ortega2025
+
+# JWT
+JWT_SECRET=tu-secreto-jwt-muy-seguro-de-al-menos-256-bits
 ```
 
-### Instalación
+### 4. Ejecutar la Aplicación
 
-1. Clonar el repositorio:
 ```bash
-git clone <repository-url>
-cd ForoHub
-```
-
-2. Ejecutar el proyecto:
-```bash
+# Compilar y ejecutar
 mvn spring-boot:run
+
+# O usando el script incluido (Windows)
+.\run.bat
 ```
 
-La aplicación estará disponible en: `http://localhost:8080`
+La aplicación estará disponible en: `http://localhost:8081`
 
 ## 📚 Documentación de la API
 
-### Swagger UI
-Accede a la documentación interactiva en: `http://localhost:8080/swagger-ui.html`
+### 🌐 Swagger UI
+Accede a la documentación interactiva en:
+```
+http://localhost:8081/swagger-ui/index.html
+```
 
-### Endpoints Principales
+### 📋 Endpoints Principales
 
-#### Autenticación
-- `POST /auth/registro` - Registrar nuevo usuario
-- `POST /auth/login` - Autenticar usuario
+#### 🔐 Autenticación
+```http
+POST /auth/login
+Content-Type: application/json
 
-#### Tópicos
-- `GET /topicos` - Listar todos los tópicos
-- `GET /topicos/{id}` - Obtener tópico específico
-- `POST /topicos` - Crear nuevo tópico ⚠️ Requiere autenticación
-- `PUT /topicos/{id}` - Actualizar tópico ⚠️ Requiere autenticación
-- `DELETE /topicos/{id}` - Eliminar tópico ⚠️ Requiere autenticación
+{
+  "email": "admin@forohub.com",
+  "contraseña": "password"
+}
+```
 
-#### Respuestas
-- `POST /respuestas` - Crear respuesta ⚠️ Requiere autenticación
-- `GET /respuestas/topico/{topicoId}` - Listar respuestas por tópico
+#### 📝 Tópicos
+```http
+GET    /topicos              # Listar tópicos (paginado)
+POST   /topicos              # Crear tópico (requiere auth)
+GET    /topicos/{id}         # Obtener tópico específico
+PUT    /topicos/{id}         # Actualizar tópico (solo autor)
+DELETE /topicos/{id}         # Eliminar tópico (solo autor)
+```
 
-## 🔐 Autenticación
+#### 💬 Respuestas
+```http
+GET    /topicos/{id}/respuestas    # Listar respuestas de un tópico
+POST   /topicos/{id}/respuestas    # Crear respuesta (requiere auth)
+PUT    /respuestas/{id}            # Actualizar respuesta (solo autor)
+DELETE /respuestas/{id}            # Eliminar respuesta (solo autor)
+```
+
+### 🔑 Autenticación
 
 Para endpoints protegidos, incluir el header:
+```http
+Authorization: Bearer {tu-jwt-token}
 ```
-Authorization: Bearer <JWT_TOKEN>
-```
+
+## 🧪 Testing con Postman
+
+### Importar Colección
+1. Importa el archivo `ForoHub_Postman_Collection.json`
+2. La colección incluye:
+   - ✅ Autenticación automática
+   - ✅ Variables de entorno configuradas
+   - ✅ Tests de todos los endpoints
+   - ✅ Casos de error incluidos
 
 ### Usuarios de Prueba
 
-El sistema incluye usuarios predefinidos para testing:
-
 | Email | Contraseña | Rol |
 |-------|------------|-----|
-| admin@forohub.com | password123 | ADMIN |
-| juan@email.com | password123 | USER |
-| maria@email.com | password123 | USER |
+| `admin@forohub.com` | `password` | ADMIN |
+| `juan.perez@email.com` | `password` | USER |
+| `maria.garcia@email.com` | `password` | USER |
 
-## 📁 Estructura del Proyecto
+## �️ Estructura de Base de Datos
 
-```
-src/
-├── main/
-│   ├── java/com/forohub/
-│   │   ├── controller/          # Controladores REST
-│   │   ├── domain/              # Entidades y repositorios
-│   │   │   ├── usuario/
-│   │   │   ├── topico/
-│   │   │   └── respuesta/
-│   │   ├── service/             # Lógica de negocio
-│   │   ├── infra/               # Configuraciones
-│   │   │   ├── security/        # Seguridad y JWT
-│   │   │   ├── errores/         # Manejo de errores
-│   │   │   └── swagger/         # Configuración Swagger
-│   │   └── ForoHubApplication.java
-│   └── resources/
-│       ├── db/migration/        # Scripts Flyway
-│       └── application.yml      # Configuración
-└── test/                        # Tests unitarios
-```
+### Tablas Principales
 
-## 🧪 Testing
+```sql
+usuarios
+├── id (PK)
+├── nombre
+├── email (UNIQUE)
+├── contraseña (BCrypt hash)
+└── rol (ADMIN, USER)
 
-Ejecutar los tests:
-```bash
-mvn test
-```
+topicos
+├── id (PK)
+├── titulo
+├── mensaje
+├── fecha_creacion
+├── estado (ABIERTO, CERRADO)
+├── autor_id (FK → usuarios.id)
+└── curso
 
-## 📦 Build y Deploy
-
-Generar JAR:
-```bash
-mvn clean package
-```
-
-Ejecutar JAR:
-```bash
-java -jar target/foro-hub-0.0.1-SNAPSHOT.jar
+respuestas
+├── id (PK)
+├── mensaje
+├── fecha_creacion
+├── autor_id (FK → usuarios.id)
+└── topico_id (FK → topicos.id)
 ```
 
 ## 🔒 Seguridad
 
-- Contraseñas encriptadas con BCrypt
-- Tokens JWT con expiración de 2 horas
-- Validación de permisos por endpoint
-- Protección CSRF deshabilitada para API REST
+- **Contraseñas**: Hash BCrypt con salt automático
+- **JWT**: Tokens firmados con algoritmo HMAC256
+- **CORS**: Configurado para desarrollo y producción
+- **Validaciones**: Bean Validation en todos los DTOs
+- **Autorización**: Control de acceso basado en roles y ownership
+## 🚀 Despliegue
 
-## 📝 Variables de Entorno
+### Variables de Entorno para Producción
 
-Para producción, configurar:
 ```bash
-export JWT_SECRET=your-super-secret-jwt-key-here
-export DB_URL=jdbc:mariadb://your-db-host:3306/forohub
-export DB_USERNAME=your-db-user
-export DB_PASSWORD=your-db-password
+# Base de datos
+SPRING_DATASOURCE_URL=jdbc:mysql://tu-host:3306/forohub
+SPRING_DATASOURCE_USERNAME=tu-usuario
+SPRING_DATASOURCE_PASSWORD=tu-password
+
+# JWT
+JWT_SECRET=tu-secreto-super-seguro-para-produccion
+
+# Perfil
+SPRING_PROFILES_ACTIVE=prod
+```
+
+### Docker (Opcional)
+
+```dockerfile
+FROM openjdk:17-jre-slim
+
+WORKDIR /app
+COPY target/foro-hub-0.0.1-SNAPSHOT.jar app.jar
+
+EXPOSE 8081
+
+CMD ["java", "-jar", "app.jar"]
 ```
 
 ## 🤝 Contribución
 
-1. Fork del proyecto
-2. Crear feature branch (`git checkout -b feature/nueva-caracteristica`)
-3. Commit de cambios (`git commit -am 'Agregar nueva característica'`)
-4. Push del branch (`git push origin feature/nueva-caracteristica`)
-5. Crear Pull Request
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia Apache 2.0. Ver el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 
-## 👥 Autor
+## � Contacto
 
-Desarrollado como parte del challenge Alura - ONE
+**Desarrollador**: Tu Nombre  
+**Email**: tu-email@ejemplo.com  
+**LinkedIn**: [tu-perfil-linkedin](https://linkedin.com/in/tu-perfil)
+
+## 🏆 Reconocimientos
+
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring Security](https://spring.io/projects/spring-security)
+- [SpringDoc OpenAPI](https://springdoc.org/)
+- [JWT.io](https://jwt.io/)
+
+---
+
+⭐ **¡Si este proyecto te fue útil, no olvides darle una estrella!** ⭐

@@ -61,8 +61,8 @@
 									"// Guardar el token automáticamente",
 									"if (pm.response.code === 200) {",
 									"    const response = pm.response.json();",
-									"    pm.collectionVariables.set('token', response.token);",
-									"    console.log('Token guardado:', response.token);",
+									"    pm.collectionVariables.set('token', response.jwtToken);",
+									"    console.log('Token guardado:', response.jwtToken);",
 									"}"
 								]
 							}
@@ -78,7 +78,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"admin@forohub.com\",\n    \"contraseña\": \"admin123\"\n}"
+							"raw": "{\n    \"email\": \"admin@forohub.com\",\n    \"contraseña\": \"password\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/login",
@@ -97,8 +97,8 @@
 									"// Guardar el token automáticamente",
 									"if (pm.response.code === 200) {",
 									"    const response = pm.response.json();",
-									"    pm.collectionVariables.set('token', response.token);",
-									"    console.log('Token guardado:', response.token);",
+									"    pm.collectionVariables.set('token', response.jwtToken);",
+									"    console.log('Token guardado:', response.jwtToken);",
 									"}"
 								]
 							}
@@ -114,7 +114,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"juan@email.com\",\n    \"contraseña\": \"password123\"\n}"
+							"raw": "{\n    \"email\": \"juan.perez@email.com\",\n    \"contraseña\": \"password\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/login",
