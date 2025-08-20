@@ -55,7 +55,7 @@ USER spring:spring
 EXPOSE 8080
 
 # Variables de entorno
-ENV SPRING_PROFILES_ACTIVE=debug
+ENV SPRING_PROFILES_ACTIVE=render
 ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseContainerSupport"
 
 # Health check

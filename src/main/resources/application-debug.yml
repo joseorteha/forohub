@@ -1,4 +1,11 @@
-# Configuración básica para debug en Railway
+# Configuración básica para debug en Render
+spring:  
+  # Base de datos (Railway MySQL)
+  datasource:
+    url: ${DATABASE_URL:jdbc:h2:mem:testdb}
+    username: ${MYSQLUSER:sa}
+    password: ${MYSQLPASSWORD:}
+    driver-class-name: ${DATABASE_DRIVER:org.h2.Driver}ción básica para debug en Railway
 spring:
   profiles:
     active: prod
