@@ -20,6 +20,9 @@ COPY src ./src
 # Compilar aplicación
 RUN mvn clean package -DskipTests -B
 
+# Debug: listar archivos generados
+RUN ls -la /app/target/
+
 # Etapa 2: Runtime
 FROM eclipse-temurin:17-jre-alpine
 
