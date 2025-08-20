@@ -263,9 +263,9 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 
 ## � Contacto
 
-**Desarrollador**: Tu Nombre  
-**Email**: tu-email@ejemplo.com  
-**LinkedIn**: [tu-perfil-linkedin](https://linkedin.com/in/tu-perfil)
+**Desarrollador**: Jose Ortega 
+**Email**: joseortegahac@gmail.com 
+**LinkedIn**: [tu-perfil-linkedin](https://www.linkedin.com/in/jose-orteg4/)
 
 ## 🏆 Reconocimientos
 
