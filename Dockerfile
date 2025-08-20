@@ -33,8 +33,8 @@ WORKDIR /app
 RUN addgroup -g 1001 -S spring && \
     adduser -S spring -u 1001
 
-# Copiar JAR desde la etapa de build
-COPY --from=builder /app/target/foro-hub-0.0.1-SNAPSHOT.jar app.jar
+# Copiar JAR desde la etapa de build usando comodín
+COPY --from=builder /app/target/*.jar app.jar
 
 # Cambiar propietario del archivo
 RUN chown spring:spring app.jar
