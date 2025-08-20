@@ -2,7 +2,7 @@
 spring:
   # Base de datos PostgreSQL (Render)
   datasource:
-    url: ${DATABASE_URL}
+    url: ${DATABASE_URL:postgresql://forohubbd_user:fiiN7nC7FbSYX0xIsMQ8a5PpjtwF57R5@dpg-d2in02buibrs73a14dl0-a.oregon-postgres.render.com/forohub?sslmode=require}
     driver-class-name: org.postgresql.Driver
     # Configuración de Hikari para PostgreSQL
     hikari:
