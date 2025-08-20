@@ -1,0 +1,44 @@
+# Configuración básica para debug en Railway
+spring:
+  profiles:
+    active: prod
+  
+  # Base de datos (Railway MySQL)
+  datasource:
+    url: ${MYSQL_URL:jdbc:h2:mem:testdb}
+    username: ${MYSQLUSER:sa}
+    password: ${MYSQLPASSWORD:}
+    driver-class-name: ${DATABASE_DRIVER:org.h2.Driver}
+  
+  # JPA/Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    database-platform: ${DATABASE_PLATFORM:org.hibernate.dialect.H2Dialect}
+  
+  # H2 Console (solo para debug)
+  h2:
+    console:
+      enabled: true
+
+# Configuración del servidor
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# JWT
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:secret-key-for-testing-only}
+
+# Logging para debug
+logging:
+  level:
+    com.forohub: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.boot: INFO
