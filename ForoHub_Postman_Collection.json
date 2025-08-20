@@ -1,0 +1,378 @@
+{
+	"info": {
+		"name": "ForoHub API - Colección Completa",
+		"description": "Colección completa para probar la API de ForoHub con autenticación JWT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "🔐 Autenticación",
+			"item": [
+				{
+					"name": "1. Registro de Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Carlos López\",\n    \"email\": \"carlos@test.com\",\n    \"contraseña\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/registro",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "registro"]
+						}
+					}
+				},
+				{
+					"name": "2. Login - Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Guardar el token automáticamente",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('token', response.token);",
+									"    console.log('Token guardado:', response.token);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@forohub.com\",\n    \"contraseña\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "3. Login - Usuario Normal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Guardar el token automáticamente",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('token', response.token);",
+									"    console.log('Token guardado:', response.token);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"juan@email.com\",\n    \"contraseña\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📝 Tópicos",
+			"item": [
+				{
+					"name": "1. Listar Todos los Tópicos (Público)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/topicos?page=0&size=10&sort=fechaCreacion,desc",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "fechaCreacion,desc"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "2. Obtener Tópico por ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/topicos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos", "1"]
+						}
+					}
+				},
+				{
+					"name": "3. Crear Nuevo Tópico (Requiere Auth)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titulo\": \"¿Cómo usar Spring Security?\",\n    \"mensaje\": \"Necesito ayuda para implementar autenticación JWT con Spring Security. ¿Algún ejemplo?\",\n    \"curso\": \"Spring Security\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/topicos",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos"]
+						}
+					}
+				},
+				{
+					"name": "4. Actualizar Tópico (Solo Autor)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titulo\": \"¿Cómo usar Spring Security? - ACTUALIZADO\",\n    \"mensaje\": \"Necesito ayuda para implementar autenticación JWT con Spring Security. ¿Algún ejemplo? Ya probé varias opciones.\",\n    \"curso\": \"Spring Security Avanzado\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/topicos/11",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos", "11"]
+						}
+					}
+				},
+				{
+					"name": "5. Eliminar Tópico (Solo Autor)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/topicos/11",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos", "11"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "💬 Respuestas",
+			"item": [
+				{
+					"name": "1. Listar Respuestas de un Tópico",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/topicos/1/respuestas?page=0&size=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos", "1", "respuestas"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "2. Crear Nueva Respuesta (Requiere Auth)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mensaje\": \"Excelente pregunta. Te recomiendo empezar con Spring Initializr para crear un proyecto base. Luego añadir las dependencias necesarias como spring-boot-starter-web.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/topicos/1/respuestas",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos", "1", "respuestas"]
+						}
+					}
+				},
+				{
+					"name": "3. Actualizar Respuesta (Solo Autor)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mensaje\": \"Actualización: Excelente pregunta. Te recomiendo empezar con Spring Initializr para crear un proyecto base. Luego añadir las dependencias necesarias como spring-boot-starter-web. También revisa la documentación oficial.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/respuestas/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["respuestas", "1"]
+						}
+					}
+				},
+				{
+					"name": "4. Eliminar Respuesta (Solo Autor)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/respuestas/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["respuestas", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🧪 Pruebas de Validación",
+			"item": [
+				{
+					"name": "Error - Crear Tópico Sin Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titulo\": \"Test sin autorización\",\n    \"mensaje\": \"Este request debería fallar\",\n    \"curso\": \"Test\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/topicos",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos"]
+						}
+					}
+				},
+				{
+					"name": "Error - Datos Inválidos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titulo\": \"\",\n    \"mensaje\": \"\",\n    \"curso\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/topicos",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos"]
+						}
+					}
+				},
+				{
+					"name": "Error - Tópico No Encontrado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/topicos/999999",
+							"host": ["{{baseUrl}}"],
+							"path": ["topicos", "999999"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

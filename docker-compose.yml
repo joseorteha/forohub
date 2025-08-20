@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  forohub-db:
+    image: mariadb:10.9
+    container_name: forohub-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: forohub
+      MYSQL_USER: forohub_user
+      MYSQL_PASSWORD: forohub_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - forohub_db_data:/var/lib/mysql
+    networks:
+      - forohub-network
+
+  forohub-app:
+    build: .
+    container_name: forohub-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://forohub-db:3306/forohub
+      SPRING_DATASOURCE_USERNAME: forohub_user
+      SPRING_DATASOURCE_PASSWORD: forohub_password
+      JWT_SECRET: super-secret-jwt-key-for-production
+    ports:
+      - "8080:8080"
+    depends_on:
+      - forohub-db
+    networks:
+      - forohub-network
+    restart: unless-stopped
+
+volumes:
+  forohub_db_data:
+
+networks:
+  forohub-network:
+    driver: bridge
