@@ -52,15 +52,16 @@ RUN chown spring:spring app.jar
 USER spring:spring
 
 # Exponer puerto
-EXPOSE 8080
+EXPOSE 10000
 
-# Variables de entorno
+# Variables de entorno por defecto
 ENV SPRING_PROFILES_ACTIVE=render
-ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseContainerSupport"
+ENV JAVA_OPTS="-Xms128m -Xmx512m -XX:+UseContainerSupport -XX:+UseG1GC"
+ENV SERVER_PORT=10000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-  CMD curl -f http://localhost:${PORT:-8080}/actuator/health || exit 1
+# Health check optimizado
+HEALTHCHECK --interval=60s --timeout=10s --start-period=60s --retries=5 \
+  CMD curl -f http://localhost:${PORT:-10000}/actuator/health || exit 1
 
-# Comando para ejecutar la aplicación
-CMD ["sh", "-c", "echo 'Iniciando ForoHub...' && java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"]
+# Comando para ejecutar la aplicación con mejor logging
+CMD ["sh", "-c", "echo 'Iniciando ForoHub con perfil render...' && echo 'Variables: PORT=${PORT} DATABASE_URL=${DATABASE_URL}' && java $JAVA_OPTS -Dserver.port=${PORT:-10000} -jar app.jar"]

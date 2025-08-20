@@ -6,11 +6,12 @@ spring:
     driver-class-name: org.postgresql.Driver
     # Configuración de Hikari para PostgreSQL
     hikari:
-      maximum-pool-size: 5
+      maximum-pool-size: 3
       minimum-idle: 1
-      connection-timeout: 30000
-      idle-timeout: 600000
-      max-lifetime: 1800000
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      leak-detection-threshold: 60000
   
   # JPA/Hibernate
   jpa:
@@ -32,6 +33,14 @@ spring:
 # Configuración del servidor
 server:
   port: ${PORT:10000}
+  # Configuración optimizada para Render
+  tomcat:
+    connection-timeout: 20000
+    keep-alive-timeout: 20000
+    max-connections: 100
+    threads:
+      max: 20
+      min-spare: 5
   error:
     include-message: always
     include-binding-errors: always
