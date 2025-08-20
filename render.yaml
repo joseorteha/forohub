@@ -3,16 +3,10 @@ services:
     name: forohub
     env: java
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -Dspring.profiles.active=render -Dserver.port=$PORT -jar target/*.jar
+    startCommand: java -Dspring.profiles.active=render -jar target/*.jar
     envVars:
       - key: JAVA_TOOL_OPTIONS
         value: -XX:+UseContainerSupport -Xmx512m
-      - key: JWT_SECRET
-        generateValue: true
-      - key: DATABASE_URL
-        fromDatabase:
-          name: forohub-db
-          property: connectionString
 
 databases:
   - name: forohub-db

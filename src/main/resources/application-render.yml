@@ -4,6 +4,13 @@ spring:
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver
+    # Configuración de Hikari para PostgreSQL
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
   
   # JPA/Hibernate
   jpa:
@@ -13,6 +20,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
   
   # Flyway deshabilitado temporalmente
   flyway:
