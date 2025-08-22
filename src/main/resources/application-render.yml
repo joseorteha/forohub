@@ -12,6 +12,10 @@ spring:
       idle-timeout: 300000
       max-lifetime: 1200000
       leak-detection-threshold: 60000
+      # Fix para issue con PostgreSQL y Hikari
+      jdbc-url: ${DATABASE_URL}
+      data-source-properties:
+        stringtype: unspecified
   
   # JPA/Hibernate
   jpa:
@@ -25,6 +29,11 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+        # Prevenir validación temprana de metadatos
+        temp:
+          use_jdbc_metadata_defaults: false
+    # Evitar validación de conexión durante arranque
+    defer-datasource-initialization: true
   
   # Flyway deshabilitado temporalmente
   flyway:
@@ -33,6 +42,21 @@ spring:
 # Configuración del servidor
 server:
   port: ${PORT:10000}
+  # Configuración adicional para Render
+  tomcat:
+    threads:
+      max: 10
+      min-spare: 2
+
+# Configuración management para health checks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
   # Configuración optimizada para Render
   tomcat:
     connection-timeout: 20000
