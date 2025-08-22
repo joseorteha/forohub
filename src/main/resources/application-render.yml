@@ -1,39 +1,33 @@
 # Configuración para producción en Render
 spring:
-  # Base de datos PostgreSQL (Render)
+  # Base de datos - Se configura programáticamente en DatabaseConfig
   datasource:
-    url: ${DATABASE_URL}
+    # Solo declaramos que el driver existe - la configuración real está en DatabaseConfig.java
     driver-class-name: org.postgresql.Driver
-    # Configuración de Hikari para PostgreSQL
-    hikari:
-      maximum-pool-size: 3
-      minimum-idle: 1
-      connection-timeout: 20000
-      idle-timeout: 300000
-      max-lifetime: 1200000
-      leak-detection-threshold: 60000
-      # Fix para issue con PostgreSQL y Hikari
-      jdbc-url: ${DATABASE_URL}
-      data-source-properties:
-        stringtype: unspecified
   
-  # JPA/Hibernate
+  # JPA/Hibernate - CONFIGURACIÓN MEJORADA PARA RENDER
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # NO especificar dialect ya que se autodetecta
         format_sql: false
         jdbc:
           lob:
             non_contextual_creation: true
-        # Prevenir validación temprana de metadatos
+        # Configuración específica para evitar problemas de conexión
         temp:
           use_jdbc_metadata_defaults: false
-    # Evitar validación de conexión durante arranque
+        connection:
+          handling_mode: delayed_acquisition_and_release_after_transaction
+        hbm2ddl:
+          auto: update
+    # Configuración de datasource
     defer-datasource-initialization: true
+    open-in-view: false
   
   # Flyway deshabilitado temporalmente
   flyway:
