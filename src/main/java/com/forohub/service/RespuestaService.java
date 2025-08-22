@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class RespuestaService {
 
     @Autowired
@@ -27,6 +29,7 @@ public class RespuestaService {
         return respuestaRepository.save(respuesta);
     }
 
+    @Transactional(readOnly = true)
     public Page<Respuesta> listarRespuestasPorTopico(Long topicoId, Pageable paginacion) {
         var topico = topicoRepository.findById(topicoId)
                 .orElseThrow(() -> new RuntimeException("Tópico no encontrado"));

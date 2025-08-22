@@ -69,7 +69,7 @@ ENV JAVA_OPTS="-Xms128m -Xmx512m -XX:+UseContainerSupport -XX:+UseG1GC"
 
 # Health check optimizado
 HEALTHCHECK --interval=60s --timeout=10s --start-period=60s --retries=5 \
-  CMD curl -f http://localhost:$PORT/actuator/health || exit 1
+  CMD curl -f http://localhost:$PORT/health || exit 1
 
 # Comando para ejecutar la aplicación con mejor logging y resolución de variables
 CMD ["./start.sh"]

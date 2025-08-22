@@ -3,9 +3,9 @@ spring:
     name: forohub
   
   datasource:
-    url: jdbc:mariadb://localhost:3306/forohub
-    username: ortega
-    password: ortega2025
+    url: ${SPRING_DATASOURCE_URL:jdbc:mariadb://localhost:3306/forohub}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.mariadb.jdbc.Driver
   
   jpa:

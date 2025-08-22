@@ -25,15 +25,22 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var authHeader = request.getHeader("Authorization");
-        if (authHeader != null) {
-            var token = authHeader.replace("Bearer ", "");
-            var nombreUsuario = tokenService.getSubject(token);
-            if (nombreUsuario != null) {
-                var usuario = usuarioRepository.findByEmail(nombreUsuario);
-                var authentication = new UsernamePasswordAuthenticationToken(usuario, null,
-                        usuario.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                var token = authHeader.substring(7);
+                var nombreUsuario = tokenService.getSubject(token);
+                if (nombreUsuario != null) {
+                    var usuarioOpt = usuarioRepository.findUsuarioByEmail(nombreUsuario);
+                    if (usuarioOpt.isPresent()) {
+                        var usuario = usuarioOpt.get();
+                        var authentication = new UsernamePasswordAuthenticationToken(usuario, null,
+                                usuario.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                }
             }
+        } catch (RuntimeException ex) {
+            // Token inválido/expirado: no autenticar y continuar la cadena
         }
         filterChain.doFilter(request, response);
     }

@@ -28,9 +28,12 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/auth/registro").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/health").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/topicos").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/topicos/{id}").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/topicos/{id}/respuestas").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/respuestas/topico/**").permitAll();
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.anyRequest().authenticated();
                 })
