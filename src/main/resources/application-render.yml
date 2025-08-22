@@ -33,7 +33,9 @@ spring:
           lob:
             non_contextual_creation: true
     defer-datasource-initialization: true
-    open-in-view: false# Configuración del servidor
+    open-in-view: false
+
+# Configuración del servidor
 server:
   port: ${PORT:10000}
   # Configuración adicional para Render
