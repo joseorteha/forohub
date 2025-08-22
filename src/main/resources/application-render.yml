@@ -1,19 +1,25 @@
 # Configuración para producción en Render
 spring:
-  # Base de datos PostgreSQL - CONFIGURACIÓN DIRECTA SIN COMPLICACIONES
+  # Base de datos PostgreSQL - CONFIGURACIÓN EXTREMA PARA EVITAR BUG HIKARI
   datasource:
-    url: ${DATABASE_URL}
+    # NO usar url directa - separar componentes manualmente
+    username: forohubbd_user
+    password: fiiN7nC7FbSYX0xIsMQ8a5PpjtwF57R5
     driver-class-name: org.postgresql.Driver
+    # URL sin parámetros SSL
+    url: jdbc:postgresql://dpg-d2in02buibrs73a14dl0-a.oregon-postgres.render.com:5432/forohubbd
     hikari:
-      maximum-pool-size: 3
+      maximum-pool-size: 2
       minimum-idle: 1
-      connection-timeout: 20000
-      idle-timeout: 300000
-      max-lifetime: 1200000
-      leak-detection-threshold: 60000
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      # Configuración SSL separada
       data-source-properties:
+        sslmode: require
         stringtype: unspecified
         ApplicationName: ForoHub
+        prepareThreshold: 0
 
   # EXCLUSIÓN CRÍTICA: Flyway causa dependencia circular
   autoconfigure:
