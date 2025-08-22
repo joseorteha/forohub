@@ -44,11 +44,15 @@ spring:
 # Configuración del servidor
 server:
   port: ${PORT:10000}
+  # CRÍTICO: Configuración para que Render detecte el puerto
+  address: 0.0.0.0
   # Configuración adicional para Render
   tomcat:
     threads:
       max: 10
       min-spare: 2
+    connection-timeout: 20000
+    keep-alive-timeout: 20000
 
 # Configuración management para health checks
 management:

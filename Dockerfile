@@ -41,17 +41,17 @@ RUN addgroup -g 1001 -S spring && \
 # Copiar JAR desde la etapa de build 
 COPY --from=builder /app/target/*.jar app.jar
 
-# Crear script de inicio
+# Crear script de inicio mejorado para Render
 RUN echo '#!/bin/sh' > start.sh && \
     echo 'echo "=== INICIANDO FOROHUB ==="' >> start.sh && \
     echo 'echo "PORT: $PORT"' >> start.sh && \
     echo 'echo "DATABASE_URL: $DATABASE_URL"' >> start.sh && \
     echo 'echo "JWT_SECRET: ${JWT_SECRET:0:20}..."' >> start.sh && \
     echo 'echo "========================="' >> start.sh && \
-    echo 'if [ -z "$DATABASE_URL" ]; then echo "ERROR: DATABASE_URL no configurada"; exit 1; fi' >> start.sh && \
     echo 'if [ -z "$JWT_SECRET" ]; then echo "ERROR: JWT_SECRET no configurada"; exit 1; fi' >> start.sh && \
     echo 'if [ -z "$PORT" ]; then export PORT=10000; fi' >> start.sh && \
-    echo 'exec java $JAVA_OPTS -Dserver.port=$PORT -jar app.jar' >> start.sh && \
+    echo 'echo "Iniciando en puerto: $PORT"' >> start.sh && \
+    echo 'exec java $JAVA_OPTS -Dserver.port=$PORT -Dserver.address=0.0.0.0 -jar app.jar' >> start.sh && \
     chmod +x start.sh
 
 # Cambiar propietario del archivo
