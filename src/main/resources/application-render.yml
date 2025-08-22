@@ -1,11 +1,21 @@
 # Configuración para producción en Render
 spring:
-  # Base de datos - Se configura programáticamente en DatabaseConfig
+  # Base de datos PostgreSQL - CONFIGURACIÓN DIRECTA SIN COMPLICACIONES
   datasource:
-    # Solo declaramos que el driver existe - la configuración real está en DatabaseConfig.java
+    url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver
-  
-  # JPA/Hibernate - CONFIGURACIÓN MEJORADA PARA RENDER
+    hikari:
+      maximum-pool-size: 3
+      minimum-idle: 1
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      leak-detection-threshold: 60000
+      data-source-properties:
+        stringtype: unspecified
+        ApplicationName: ForoHub
+
+  # JPA/Hibernate - CONFIGURACIÓN SIMPLE PARA POSTGRESQL
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,27 +23,16 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        # NO especificar dialect ya que se autodetecta
         format_sql: false
         jdbc:
           lob:
             non_contextual_creation: true
-        # Configuración específica para evitar problemas de conexión
-        temp:
-          use_jdbc_metadata_defaults: false
-        connection:
-          handling_mode: delayed_acquisition_and_release_after_transaction
-        hbm2ddl:
-          auto: update
-    # Configuración de datasource
     defer-datasource-initialization: true
     open-in-view: false
-  
-  # Flyway deshabilitado temporalmente
-  flyway:
-    enabled: false
 
-# Configuración del servidor
+  # Flyway deshabilitado para evitar conflictos
+  flyway:
+    enabled: false# Configuración del servidor
 server:
   port: ${PORT:10000}
   # Configuración adicional para Render
